@@ -7,7 +7,7 @@ from dateutil.parser import parse
 from bs4 import BeautifulSoup
 
 url = "http://www.ire.org/conferences/nicar2016/schedule/"
-fieldnames = ["day", "start_time", "end_time", "category", "title", "speaker", "room", "description"]
+fieldnames = ["day", "start_time", "end_time", "category", "title", "speaker", "room", "url", "description"]
 
 def parse_session(session, day):
 	'''
@@ -22,6 +22,7 @@ def parse_session(session, day):
 	session_data["category"] = session.find("div", class_="heading5").text
 	title_block = session.find("div", class_="col-60 body2 gray-45")
 	session_data["title"] = title_block.find("h3").find("a").text
+	session_data["url"] = "http://www.ire.org" + title_block.find("h3").find("a")["href"]
 	session_data["speaker"] = title_block.find_all("p")[0].text.replace("Speaker: ", "").replace("Speakers: ", "")
 	session_data["description"] = ""
 	if len(title_block.find_all("p")) > 1:
